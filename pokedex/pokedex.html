@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Pokedex</title>
+    <link rel="stylesheet" type="text/css" href="pokedex.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $('.pokedex').hide();
+            for (var i = 1; i < 12; i++) {
+                var eachImage = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/" +i+".png";
+                $('.images').append("<img src='" + eachImage + "' id='" + i + "'>") 
+                }
+            
+                var baseURL = "https://pokeapi.co/api/v2/";
+                $('.images').on('click', 'img', function(){
+                    $('.pokedex').slideDown("fast");
+                    var pokeId = $(this).attr("id");
+                    var params = "pokemon/" + pokeId + "/";
+                    var otherparams = "characteristic/" + pokeId + "/";
+                    $.get(baseURL+ params, function(res){
+                        var eachImage = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/" +pokeId+".png";
+                        var pokeTypes = "";
+                        for (var j = 0; j < res.types.length; j++){
+                            pokeTypes += "<li>" + res.types[j].type.name + "</li>"; 
+                        }
+                        var mystr = `
+                            <h1>${res.name}</h1>
+                            <img src=${eachImage}>
+                            <h5>Types</h5>
+                            <ul>
+                                ${pokeTypes}
+                            </ul>
+                            <h5> Height</h5>
+                                ${res.height}
+                            <h5> Weight </h5>
+                                ${res.weight}
+                            `;
+                        
+                        $('.pokedex').html(mystr);
+                        }, 'json');
+                    });
+        });
+            
+        
+    </script> 
+
+</head>
+<body>
+    <div class="container">
+        <div class="images">
+
+        </div>
+        <div class="pokedex">
+
+        </div>
+
+    </div>
+</body>
+</html>

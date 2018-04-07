@@ -1,0 +1,13 @@
+.images, .pokedex {
+    width: 45%;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.pokedex {
+    border: 5px solid red;
+    width: 350px;
+    margin: 25px;
+    padding: 25px;
+    
+}
