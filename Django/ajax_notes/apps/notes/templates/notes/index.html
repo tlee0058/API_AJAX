@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'notes/style.css' %}">
+</head>
+<body>
+    <div class="container">
+        
+        <div class="notes">
+            <h5>Notes</h5>
+            <hr/>
+
+  
+        </div>
+        
+        
+
+        <div class="addnotes">
+            <form action="/addnotes" method="post" id="addbutton">
+                {% csrf_token %}
+                <input type="text" name="title" placeholder="Insert note title here">
+                <p><input type="submit" value="Add Note"></p>
+            </form>
+        </div>
+
+    </div>
+    <script>
+        $('#addbutton').submit(function(e){
+            e.preventDefault()
+            $.ajax({
+                url : $(this).attr('action'),
+                method : 'post',
+                data : $(this).serialize(),
+                success : function(serverResponse){
+                    $('.notes').html(serverResponse)
+                }
+            })
+        })
+    </script>
+</body>
+</html>

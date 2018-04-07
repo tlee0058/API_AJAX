@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'notes/style.css' %}">
+</head>
+<body>
+    {% for title in titles %}
+    <div class="inside">
+        <hr/>
+        <p>{{ title.label }}   <a href="/delete/{{title.id}}"><button>delete</button></a> </p>
+        <div class="desc">
+            <form action="adddesc/{{title.id}}" method="post" id="{{title.id}}">
+                {% csrf_token %}
+                <textarea id = "desc" name="desc">{{title.description.text}}</textarea>
+            </form>
+        </div>
+    </div>
+    
+    <script>
+        $(document).on('click', '#desc', function(e){
+            e.preventDefault()
+            $(this).mouseleave(function(){
+                $.ajax({
+                    url : $(this).parent().attr('action'),
+                    method : 'post',
+                    data : $(this).parent().serialize(),
+                    success : function(serverResponse){
+                        console.log(serverResponse)
+                        $('#desc').append(serverResponse)
+                    }
+                })
+            })
+        })
+    </script>
+    {% endfor %}
+</body>
+</html>
