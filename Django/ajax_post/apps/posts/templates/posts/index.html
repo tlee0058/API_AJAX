@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>My Posts!</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'posts/style.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>My Posts</h1>
+        <div class="posts">
+
+        </div>
+
+        <h5>Add a notes:</h5>
+        <div class="notes"></div>
+        <form action="/postIt" method="post" id="button">
+            {% csrf_token %}
+            <textarea name="desc"></textarea>
+            <p><input type="submit" value="Post It!"></p>
+        </form>
+    </div>
+    <script>
+        $('form').submit(function(){
+        
+        $.ajax({
+            url : '/postIt',
+            method : 'post',
+            data : $(this).serialize(),
+            success : function(serverResponse){
+                console.log(serverResponse)
+                $('.posts').append(serverResponse)
+            }
+            
+        })
+        return false
+    })
+
+        
+    </script>
+</body>
+</html>

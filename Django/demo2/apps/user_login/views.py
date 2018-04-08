@@ -3,12 +3,15 @@ from __future__ import unicode_literals
 
 from django.shortcuts import render, HttpResponse, redirect
 from .models import User
+from .forms import RegisterForm
 from django.core import serializers
 import json
 
 # Create your views here.
 def index(request):
-    return render(request, 'user_login/index.html')
+    form = RegisterForm()
+    context = { "regForm": form }
+    return render(request, "user_login/forms.html", context)
 
 def get_json(request):
     users = User.objects.all()

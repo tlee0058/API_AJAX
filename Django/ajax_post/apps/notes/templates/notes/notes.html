@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'notes/style.css' %}">
+</head>
+<body>
+    {% for note in notes %}
+    <div class="inside">
+        <hr/>
+        <p>{{ note.title }}   <a href="/delete"><button>delete</button></a> </p>
+        <div class="desc">
+            <form action="adddesc" method="post" id="{{note.id}}">
+                {% csrf_token %}
+                <textarea id = "desc" name="desc"></textarea>
+            </form>
+        </div>
+    </div>
+    
+    <script>
+        $('#adddesc').on('click', '#desc', function(e){
+            e.preventDefault()
+            $.ajax({
+                url : '/adddesc/' + $(this).attr('id'),
+                method : 'post',
+                data : $(this).parent().serialize(),
+                success : function(serverResponse){
+                    console.log(serverResponse)
+                }
+            })
+        })
+    </script>
+    {% endfor %}
+</body>
+</html>

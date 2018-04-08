@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+</head>
+<body>
+    <h1>Display all books:</h1>
+    <div>
+        {% for book in books %}
+        <p>{{book.title}} {{book.desc}}</p>
+        {% endfor %}
+    </div>
+    
+    <h1>Add a Book</h1>
+    <form action="/book/add" method="post">
+        {% csrf_token %}
+        <input type="text" name="title">
+        <input type="text" name="desc">
+        <input type="submit" value="Add">
+    </form>
+    <script>
+        $('form').submit(function(e){
+            e.preventDefault();
+            $.ajax({
+                data : $(this).serialize(),
+                url : $(this).attr('action'),
+                method : 'post',
+                success : function(res){
+                    $('div').append(res)
+                }
+            })
+        })
+    </script>
+</body>
+</html>
